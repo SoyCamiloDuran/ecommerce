@@ -43,6 +43,7 @@ function classNames(...classes) {
 }
 
 const ImageGallery = ({ photo }) => {
+
     return (
         <>
             {/* Image gallery */}

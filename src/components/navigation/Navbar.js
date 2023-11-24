@@ -4,6 +4,7 @@ import { Menu, Popover, Transition } from '@headlessui/react'
 import { NavLink, Link } from 'react-router-dom'
 import { Navigate } from 'react-router'
 import Alert from '../../components/alert'
+
 import {
   BookmarkAltIcon,
   BriefcaseIcon,
@@ -92,7 +93,15 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function Navbar({ isAuthenticated, user, logout, get_categories, categories, get_search_products, total_items }) {
+function Navbar({
+  isAuthenticated,
+  user,
+  logout,
+  get_categories,
+  categories,
+  get_search_products,
+  total_items
+}) {
 
   // eslint-disable-next-line
   const [redirect, setRedirect] = useState(false);
@@ -162,7 +171,7 @@ function Navbar({ isAuthenticated, user, logout, get_categories, categories, get
                     'block px-4 py-2 text-sm'
                   )}
                 >
-                  Panel
+                  Dashboard
                 </Link>
               )}
             </Menu.Item>
@@ -178,7 +187,7 @@ function Navbar({ isAuthenticated, user, logout, get_categories, categories, get
                       'block w-full text-left px-4 py-2 text-sm'
                     )}
                   >
-                    Desconectar
+                    Sign out
                   </button>
                 )}
               </Menu.Item>
@@ -222,12 +231,12 @@ function Navbar({ isAuthenticated, user, logout, get_categories, categories, get
             <div className="-mr-2 -my-2 md:hidden">
 
               <Link to="/cart" className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                <span className="sr-only">Menú abierto</span>
+                <span className="sr-only">Open menu</span>
                 <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                {/* <span className="text-xs absolute top-1 mt-3 ml-4 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{total_items}</span> */}
+                <span className="text-xs absolute top-1 mt-3 ml-4 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{total_items}</span>
               </Link>
               <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                <span className="sr-only">Menú abierto</span>
+                <span className="sr-only">Open menu</span>
                 <MenuIcon className="h-6 w-6" aria-hidden="true" />
               </Popover.Button>
             </div>
@@ -250,7 +259,7 @@ function Navbar({ isAuthenticated, user, logout, get_categories, categories, get
               <div className="flex items-center md:ml-12">
                 <Link to="/cart">
                   <ShoppingCartIcon className="h-8 w-8 cursor-pointer text-gray-300 mr-4" />
-                  {/* <span className="text-xs absolute top-1 mt-3 ml-4 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{total_items}</span> */}
+                  <span className="text-xs absolute top-1 mt-3 ml-4 bg-red-500 text-white font-semibold rounded-full px-2 text-center">{total_items}</span>
                 </Link>
                 {
                   isAuthenticated ? authLinks : guestLinks
@@ -285,7 +294,7 @@ function Navbar({ isAuthenticated, user, logout, get_categories, categories, get
                   </div>
                   <div className="-mr-2">
                     <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                      <span className="sr-only">Cerrar menú</span>
+                      <span className="sr-only">Close menu</span>
                       <XIcon className="h-6 w-6" aria-hidden="true" />
                     </Popover.Button>
                   </div>
@@ -309,7 +318,7 @@ function Navbar({ isAuthenticated, user, logout, get_categories, categories, get
                     <div className="mt-8 text-base">
                       <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
                         {' '}
-                        Ver todos los productos <span aria-hidden="true">&rarr;</span>
+                        View all products <span aria-hidden="true">&rarr;</span>
                       </a>
                     </div>
                   </nav>
@@ -346,13 +355,13 @@ function Navbar({ isAuthenticated, user, logout, get_categories, categories, get
                     to="/dashboard"
                     className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                   >
-                    Resistrar
+                    Sign up
                   </Link> :
                     <a
                       href="#"
                       className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                     >
-                      Resistrar
+                      Sign up
                     </a>}
 
 
@@ -379,7 +388,7 @@ const mapStateToProps = state => ({
   isAuthenticated: state.Auth.isAuthenticated,
   user: state.Auth.user,
   categories: state.Categories.categories,
-  // total_items: state.Cart.total_items
+  total_items: state.Cart.total_items
 })
 
 export default connect(mapStateToProps, {

@@ -1,6 +1,12 @@
 import { SearchIcon } from '@heroicons/react/solid'
 
-const SearchBox = ({ categories, search, onChange, onSubmit }) => {
+
+const SearchBox = ({
+    categories,
+    search,
+    onChange,
+    onSubmit,
+}) => {
     return (
         <form onSubmit={e => onSubmit(e)} className="text-base font-medium text-gray-500 hover:text-gray-900">
             <div>
@@ -12,7 +18,7 @@ const SearchBox = ({ categories, search, onChange, onSubmit }) => {
                             name='category_id'
                             className='rounded-full'
                         >
-                            <option value={0}>Todos</option>
+                            <option value={0}>All</option>
                             {
                                 categories &&
                                 categories !== null &&

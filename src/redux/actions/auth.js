@@ -22,8 +22,11 @@ import {
 import { setAlert } from './alert';
 import axios from 'axios';
 
+import { get_items, get_total, get_item_total, synch_cart } from './cart'
+import { get_wishlist_item_total, get_wishlist_items, clear_wishlist } from './wishlist';
+
 export const check_authenticated = () => async dispatch => {
-    if(localStorage.getItem('access')){
+    if (localStorage.getItem('access')) {
         const config = {
             headers: {
                 'Accept': 'application/json',
@@ -47,7 +50,7 @@ export const check_authenticated = () => async dispatch => {
                     type: AUTHENTICATED_FAIL
                 });
             }
-        } catch(err){
+        } catch (err) {
             dispatch({
                 type: AUTHENTICATED_FAIL
             });
@@ -86,7 +89,7 @@ export const signup = (first_name, last_name, email, password, re_password) => a
                 type: SIGNUP_SUCCESS,
                 payload: res.data
             });
-            dispatch(setAlert('Te enviamos un correo, por favor activa tu cuenta. Revisa el correo de spam','green'))
+            dispatch(setAlert('Te enviamos un correo, por favor activa tu cuenta. Revisa el correo de spam', 'green'))
         } else {
             dispatch({
                 type: SIGNUP_FAIL
@@ -108,7 +111,7 @@ export const signup = (first_name, last_name, email, password, re_password) => a
 };
 
 export const load_user = () => async dispatch => {
-    if(localStorage.getItem('access')){
+    if (localStorage.getItem('access')) {
         const config = {
             headers: {
                 'Authorization': `JWT ${localStorage.getItem('access')}`,
@@ -118,7 +121,7 @@ export const load_user = () => async dispatch => {
 
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
-        
+
             if (res.status === 200) {
                 dispatch({
                     type: USER_LOADED_SUCCESS,
@@ -130,7 +133,7 @@ export const load_user = () => async dispatch => {
                 });
             }
         }
-        catch(err){
+        catch (err) {
             dispatch({
                 type: USER_LOADED_FAIL
             });
@@ -160,17 +163,25 @@ export const login = (email, password) => async dispatch => {
 
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/create/`, body, config);
-    
+
         if (res.status === 200) {
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
             });
             dispatch(load_user());
+
             dispatch({
                 type: REMOVE_AUTH_LOADING
             });
             dispatch(setAlert('Inicio de sesión con éxito', 'green'));
+            dispatch(synch_cart());
+            dispatch(get_wishlist_items());
+            dispatch(get_wishlist_item_total());
+
+
+
+
         } else {
             dispatch({
                 type: LOGIN_FAIL
@@ -181,7 +192,7 @@ export const login = (email, password) => async dispatch => {
             dispatch(setAlert('Error al iniciar sesion.', 'red'));
         }
     }
-    catch(err){
+    catch (err) {
         dispatch({
             type: LOGIN_FAIL
         });
@@ -210,7 +221,7 @@ export const activate = (uid, token) => async dispatch => {
 
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/activation/`, body, config);
-    
+
         if (res.status === 204) {
             dispatch({
                 type: ACTIVATION_SUCCESS
@@ -226,7 +237,7 @@ export const activate = (uid, token) => async dispatch => {
             type: REMOVE_AUTH_LOADING
         });
     }
-    catch(err){
+    catch (err) {
         dispatch({
             type: ACTIVATION_FAIL
         });
@@ -252,7 +263,7 @@ export const refresh = () => async dispatch => {
 
         try {
             const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/refresh/`, body, config);
-            
+
             if (res.status === 200) {
                 dispatch({
                     type: REFRESH_SUCCESS,
@@ -263,7 +274,7 @@ export const refresh = () => async dispatch => {
                     type: REFRESH_FAIL
                 });
             }
-        }catch(err){
+        } catch (err) {
             dispatch({
                 type: REFRESH_FAIL
             });
@@ -288,9 +299,9 @@ export const reset_password = (email) => async dispatch => {
 
     const body = JSON.stringify({ email });
 
-    try{
+    try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password/`, body, config);
-        
+
         if (res.status === 204) {
             dispatch({
                 type: RESET_PASSWORD_SUCCESS
@@ -309,7 +320,7 @@ export const reset_password = (email) => async dispatch => {
             dispatch(setAlert('Error al enviar el correo electrónico para restablecer la contraseña.', 'red'));
         }
     }
-    catch(err){
+    catch (err) {
         dispatch({
             type: RESET_PASSWORD_FAIL
         });
@@ -349,7 +360,7 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
     } else {
         try {
             const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password_confirm/`, body, config);
-        
+
             if (res.status === 204) {
                 dispatch({
                     type: RESET_PASSWORD_CONFIRM_SUCCESS
@@ -367,7 +378,7 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
                 });
                 dispatch(setAlert('Error al restablecer tu contraseña.', 'red'));
             }
-        } catch(err){
+        } catch (err) {
             dispatch({
                 type: RESET_PASSWORD_CONFIRM_FAIL
             });
@@ -384,4 +395,8 @@ export const logout = () => dispatch => {
         type: LOGOUT
     });
     dispatch(setAlert('Cerró sesión exitosamente', 'green'));
+    dispatch(get_items());
+    dispatch(get_item_total());
+    dispatch(get_total());
+    dispatch(clear_wishlist);
 }

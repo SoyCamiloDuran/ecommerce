@@ -1,0 +1,22 @@
+npm install -D tailwindcss
+npx tailwindcss init
+npm install redux redux-devtools-extension react-redux redux-thunk
+npm install react-toastify
+npm install react-router-dom
+npm install @headlessui/react @heroicons/react
+
+
+pip install virtualenv
+python -m virtualenv env
+
+
+npm install axios
+npm install react-loader-spinner
+
+
+npm i braintree-web-drop-in-react
+
+ npm i moment
+
+npm i  @fortawesome/react-fontawesome @fortawesome/fontawesome-free-regular @fortawesome/free-solid-svg-icons
+
